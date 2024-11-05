@@ -13,7 +13,7 @@ TODO Agents:
 answer_checker_agent = Agent(
     role="7th grade answer checker supervisor", 
     goal="Given the correct answer and a student's answer for a given question. Check if the answer given by the student is correct or not.", 
-    backstory="You are a answer checker supervisor, who correct's student's answer for a particular question. You have to be linient and understand the approach the student has used instead of just checking the answer."
+    backstory="You are a answer checker supervisor, who correct's student's answer for a particular question. You have understand the approach the student has used instead of just checking the answer."
 )
 
 student_confusion_detection_agent = Agent(
@@ -25,7 +25,7 @@ student_confusion_detection_agent = Agent(
 def check_student_answer(student_answer: str, original_question: str, ground_turth: str) -> bool:
     task1 = Task(
         description=f"For the given question: {original_question} and the correct answer: {ground_turth}. Check if the student has given the correct answer: {student_answer}", 
-        expected_output="Praise them if the answer was correct, or guide them to the correct answer if the answer was wrong without gicing them the answer directly.", 
+        expected_output="return True if the answer is correct else return False. Only return the output in boolean and no extra text.", 
         agent=answer_checker_agent
     )
 
@@ -36,6 +36,7 @@ def check_student_answer(student_answer: str, original_question: str, ground_tur
     )
 
     result = student_checker_crew.kickoff()
+    result = result.raw
 
     return bool(result)
 
